@@ -1,4 +1,4 @@
-// ====== HAMBURGER ======
+// HAMBURGER 
 const toggle =
 document.getElementById("menu-toggle");
 const nav =
@@ -8,7 +8,7 @@ if(toggle){
     toggle.addEventListener('click',()=>{nav.style.display = nav.style.display === "flex" ? "none" : "flex"});
 }
 
-// ====== SLIDER ======
+// SLIDER 
 let slides =
 document.querySelectorAll(".slide");
 let current = 0;
@@ -23,14 +23,14 @@ function nextSlide(){
 
 setInterval(nextSlide,7000);
 
-// ====== LOADER ======
+// LOADER 
 window.addEventListener("load",()=> {const loader = document.querySelector(".loader");
 if(loader){
     loader.style.display = "none";
 }
 })
 
-// ====== SCROLL ANIMATION ======
+//  SCROLL ANIMATION 
 const sections =
 document.querySelectorAll(".glass-section");
 
