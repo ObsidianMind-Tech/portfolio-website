@@ -1,0 +1,9 @@
+
+> obsidian-mind-technologies-website@1.0.0 start
+> node server.js
+
+[dotenv@17.3.1] injecting env (3) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+Server running on http://localhost:3000
+Mail server ready: true
+Sending as: koredebamidele149@gmail.com
+Terminate batch job (Y/N)? 

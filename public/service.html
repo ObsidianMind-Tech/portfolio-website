@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Services — Obsidian Mind Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f8f7f4;
+  --card:#ffffff;
+  --ink:#111110;
+  --ink2:#444440;
+  --muted:#888884;
+  --border:#e5e3dc;
+  --accent:#1a1a18;
+  --gold:#c9a84c;
+  --gold-light:#fdf6e7;
+}
+
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--ink);padding-top:90px}
+
+/* ── Header ── */
+header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:80px;background:rgba(15,15,15,0.7);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06)}
+
+.brand{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-.01em}
+
+.menu-toggle{font-size:28px;cursor:pointer;color:#fff;background:none;border:none;line-height:1}
+
+nav{display:none;flex-direction:column;position:absolute;top:80px;right:60px;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);padding:20px;border-radius:15px;box-shadow:0 8px 32px rgba(0,0,0,0.4);z-index:100}
+nav a{color:white;text-decoration:none;margin:10px 0;transition:0.3s;font-size:14px;letter-spacing:.04em}
+nav a:hover{color:#00c6ff;transform:translateX(5px)}
+nav a.active{color:#00c6ff}
+
+/* ── Back button ── */
+.back-btn{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;letter-spacing:.04em;padding:2rem 1.5rem 0;transition:color .2s}
+.back-btn svg{transition:transform .2s}
+.back-btn:hover{color:var(--ink)}
+.back-btn:hover svg{transform:translateX(-4px)}
+
+/* ── Section header ── */
+.section-wrap{padding:2rem 1.5rem 5rem;max-width:1100px;margin:0 auto}
+.section-tag{text-align:center;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.section-title{text-align:center;font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-.02em;margin-bottom:.75rem}
+.section-sub{text-align:center;font-size:15px;color:var(--muted);max-width:480px;margin:0 auto 3.5rem;line-height:1.7}
+
+/* ── Grid ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.1)}
+
+.card-img{position:relative;height:200px;overflow:hidden;background:#e5e3dc}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.card:hover .card-img img{transform:scale(1.05)}
+.card-badge{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:4px}
+
+.card-body{padding:1.5rem}
+.card-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:.4rem}
+.card-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:1rem}
+.card-starting{font-size:12px;color:var(--muted);margin-bottom:1.25rem}
+.card-starting span{font-size:1.1rem;font-weight:600;color:var(--ink);font-family:'Syne',sans-serif}
+
+.card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:1rem;border-top:1px solid var(--border)}
+.card-types{font-size:12px;color:var(--muted)}
+.read-more{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif;padding:0;transition:gap .2s}
+.read-more:hover{gap:10px}
+
+/* ── Modal ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:center;justify-content:center;padding:1.5rem}
+.overlay.open{display:flex}
+.modal{background:var(--card);border-radius:16px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;position:relative}
+.modal-img{height:240px;overflow:hidden;border-radius:16px 16px 0 0}
+.modal-img img{width:100%;height:100%;object-fit:cover}
+.modal-body{padding:2rem}
+.modal-badge{display:inline-block;background:var(--gold-light);color:var(--gold);font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:1rem;font-weight:500}
+.modal-title{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:.75rem}
+.modal-desc{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:1.75rem}
+.modal-divider{height:1px;background:var(--border);margin-bottom:1.75rem}
+.pricing-title{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.pricing-list{display:flex;flex-direction:column;gap:.75rem;margin-bottom:2rem}
+.pricing-row{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1rem;background:var(--bg);border-radius:8px;border:1px solid var(--border)}
+.pricing-type{font-size:14px;font-weight:500}
+.pricing-type small{display:block;font-size:12px;color:var(--muted);font-weight:400;margin-top:2px}
+.pricing-price{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--ink);white-space:nowrap}
+.modal-cta{width:100%;padding:1rem;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .18s}
+.modal-cta:hover{background:#333}
+.modal-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;background:rgba(0,0,0,.35);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10}
+.modal-close svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2}
+
+@media(max-width:500px){.modal-body{padding:1.25rem}.modal-title{font-size:1.3rem}.section-wrap{padding:1.5rem 1rem 4rem}}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <a href="index.html" class="brand">Obsidian Mind</a>
+  <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+  <nav id="nav-menu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="portfolio.html">Work</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<!-- Back button -->
+<a href="index.html" class="back-btn">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+  Back to Home
+</a>
+
+<!-- Services -->
+<div class="section-wrap">
+  <p class="section-tag">What we offer</p>
+  <h2 class="section-title">Our Services</h2>
+  <p class="section-sub">Professional creative and technical services tailored to grow your brand and business.</p>
+  <div class="grid" id="services-grid"></div>
+</div>
+
+<!-- Modal -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modal-close">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-img"><img id="modal-img" src="" alt=""/></div>
+    <div class="modal-body">
+      <span class="modal-badge" id="modal-badge"></span>
+      <h3 class="modal-title" id="modal-title"></h3>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div class="modal-divider"></div>
+      <p class="pricing-title">Pricing</p>
+      <div class="pricing-list" id="modal-pricing"></div>
+      <button class="modal-cta" onclick="window.location.href='contact.html'">Get a Quote &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const services = [
+  {
+    id:1, image:'images/slide4.jpg', badge:'Creative Graphics Design', title:'Graphics Design',
+    desc:'Eye-catching visuals that communicate your message clearly and professionally across all platforms.',
+    starting:15, types:'4 types available',
+    fullDesc:'We create stunning graphic designs tailored to your brand identity. From social media content to professional marketing materials, every design is crafted with purpose and precision.',
+    pricing:[
+      {type:'Social Media Post',   note:'Per design, print-ready',    price:'$15'},
+      {type:'Banner / Ad Design',  note:'Web or print formats',       price:'$25'},
+      {type:'Business Card',       note:'Double sided, print-ready',  price:'$20'},
+      {type:'Certificate / Award', note:'Custom layout',              price:'$30'},
+    ]
+  },
+  {
+    id:2, image:'images/slide1.jpg', badge:'Luxury Web Development', title:'Web Development',
+    desc:'Fast, responsive and modern websites built to convert visitors into clients.',
+    starting:120, types:'3 types available',
+    fullDesc:'We build professional websites that are fast, mobile-friendly, and designed to represent your brand at its best. From simple landing pages to full business sites and online stores.',
+    pricing:[
+      {type:'Landing Page',      note:'Single page, fully responsive',    price:'$120'},
+      {type:'Business Website',  note:'Up to 5 pages + contact form',     price:'$280'},
+      {type:'E-commerce Store',  note:'Product listings + payment',       price:'$550'},
+    ]
+  },
+  {
+    id:3, image:'images/slide6.jpg', badge:'Tech Tutoring', title:'Tutoring',
+    desc:'Learn graphic design, web development and digital skills from an experienced professional.',
+    starting:20, types:'3 plans available',
+    fullDesc:'Whether you are a beginner or looking to sharpen your skills, our tutoring sessions are structured, practical and results-driven. We cover graphics, web development, and more.',
+    pricing:[
+      {type:'Per Hour Session', note:'One-on-one, online',          price:'$20'},
+      {type:'Weekly Plan',      note:'3 sessions per week',         price:'$55'},
+      {type:'Monthly Plan',     note:'Daily sessions, full curriculum', price:'$180'},
+    ]
+  },
+  {
+    id:4, image:'images/slide5.jpg', badge:'Professional Flyer Design', title:'Flyer Design',
+    desc:'Bold, print-ready flyers designed to grab attention and drive action for your events.',
+    starting:18, types:'3 types available',
+    fullDesc:'Our flyer designs are vibrant, professionally laid out, and delivered print-ready. Perfect for events, promotions, announcements and marketing campaigns.',
+    pricing:[
+      {type:'Single Flyer',       note:'One side, print-ready',      price:'$18'},
+      {type:'Double Sided Flyer', note:'Front and back design',      price:'$30'},
+      {type:'Event Flyer Pack',   note:'3 variations included',      price:'$50'},
+    ]
+  },
+  {
+    id:5, image:'images/slide3.jpg', badge:'High-End Branding', title:'Branding',
+    desc:'Build a brand identity that is memorable, consistent and speaks to your target audience.',
+    starting:80, types:'3 types available',
+    fullDesc:'A strong brand goes beyond a logo. We craft complete brand identities including color palettes, typography, brand guidelines and all the assets you need to show up consistently.',
+    pricing:[
+      {type:'Brand Identity',      note:'Colors, fonts, mood board',       price:'$80'},
+      {type:'Brand Guidelines',    note:'Full usage document',             price:'$120'},
+      {type:'Full Brand Package',  note:'Identity + guidelines + assets',  price:'$220'},
+    ]
+  },
+  {
+    id:6, image:'images/slide2.jpg', badge:'Premium Logo Design', title:'Logo Making',
+    desc:'Distinctive logos that capture the essence of your brand and leave a lasting impression.',
+    starting:35, types:'3 types available',
+    fullDesc:'Your logo is the face of your brand. We design unique, versatile logos delivered in all formats — PNG, SVG, PDF — so you can use them anywhere with confidence.',
+    pricing:[
+      {type:'Basic Logo',       note:'1 concept, 2 revisions',        price:'$35'},
+      {type:'Logo + Variations',note:'2 concepts, light/dark versions',price:'$65'},
+      {type:'Logo + Brand Kit', note:'Logo, icons, color palette',    price:'$110'},
+    ]
+  },
+];
+
+function renderCards(){
+  document.getElementById('services-grid').innerHTML = services.map(s=>`
+    <div class="card" onclick="openModal(${s.id})">
+      <div class="card-img">
+        <img src="${s.image}" alt="${s.title}"/>
+        <span class="card-badge">${s.badge}</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">${s.title}</h3>
+        <p class="card-desc">${s.desc}</p>
+        <p class="card-starting">Starting from <span>$${s.starting}</span></p>
+        <div class="card-footer">
+          <span class="card-types">${s.types}</span>
+          <button class="read-more">Read more &rarr;</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openModal(id){
+  const s = services.find(x=>x.id===id);
+  document.getElementById('modal-img').src      = s.image;
+  document.getElementById('modal-img').alt      = s.title;
+  document.getElementById('modal-badge').textContent = s.badge;
+  document.getElementById('modal-title').textContent = s.title;
+  document.getElementById('modal-desc').textContent  = s.fullDesc;
+  document.getElementById('modal-pricing').innerHTML = s.pricing.map(p=>`
+    <div class="pricing-row">
+      <div class="pricing-type">${p.type}<small>${p.note}</small></div>
+      <div class="pricing-price">${p.price}</div>
+    </div>
+  `).join('');
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('overlay').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+// Hamburger
+const toggle = document.getElementById('menu-toggle');
+const nav    = document.getElementById('nav-menu');
+if(toggle){ toggle.addEventListener('click',()=>{ nav.style.display = nav.style.display==='flex'?'none':'flex'; }); }
+
+renderCards();
+</script>
+</body>
+</html>

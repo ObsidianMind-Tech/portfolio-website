@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contact</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0c0c0b;--surface:#141413;--border:#2a2a28;--border2:#3d3d3a;--text:#f0ede6;--muted:#6b6b66;--accent:#e8ff47;--accent-dark:#b8cc1a;--red:#ff4d4d}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:block;align-items:center;justify-content:center;padding:3rem 1.5rem}
+.page{width:100%;max-width:580px}
+.header{margin-bottom:3rem}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem}
+.tag-dot{width:6px;height:6px;background:var(--accent);display:inline-block}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,7vw,4.5rem);font-weight:800;line-height:.95;letter-spacing:-.03em;margin-bottom:1rem}
+h1 span{color:var(--accent)}
+.sub{font-size:14px;color:var(--muted);line-height:1.7;max-width:340px}
+.form-wrap{background:var(--surface);border:1px solid var(--border);padding:2.5rem}
+.field{position:relative}
+.field+.field{border-top:1px solid var(--border)}
+.field-inner{padding:1.25rem 0}
+.field-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
+label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.field-idx{font-size:10px;color:var(--border2);letter-spacing:.1em}
+input[type=text],input[type=email],textarea{width:100%;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:300;color:var(--text);background:transparent;border:none;outline:none;border-radius:0;-webkit-appearance:none;transition:color .15s}
+input::placeholder,textarea::placeholder{color:var(--border2)}
+input.err,textarea.err{color:var(--red)}
+textarea{resize:none;height:100px;line-height:1.6;display:block}
+.err-msg{font-size:11px;color:var(--red);margin-top:.4rem;letter-spacing:.04em;display:none}
+.has-err .err-msg{display:block}
+.focus-bar{height:1px;background:var(--border);margin-top:.5rem;position:relative;overflow:hidden}
+.focus-bar::after{content:'';position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.field:focus-within .focus-bar::after{transform:scaleX(1)}
+.footer{margin-top:2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.privacy{font-size:11px;color:var(--muted);line-height:1.6;letter-spacing:.02em}
+button[type=submit]{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--bg);background:var(--accent);border:none;padding:.9rem 2rem;cursor:pointer;transition:background .18s,transform .1s;white-space:nowrap;flex-shrink:0}
+button:hover{background:var(--accent-dark)}
+button:active{transform:scale(.98)}
+button:disabled{background:var(--border2);color:var(--muted);cursor:not-allowed}
+.btn-loading{display:none}
+button.loading .btn-text{display:none}
+button.loading .btn-loading{display:inline}
+.notice{display:none;margin-top:1.5rem;padding:.8rem 1.2rem;font-size:12px;letter-spacing:.04em;border-left:2px solid}
+.notice.ok{border-color:var(--accent);color:var(--accent);background:rgba(232,255,71,.06)}
+.notice.fail{border-color:var(--red);color:var(--red);background:rgba(255,77,77,.06)}
+.notice.show{display:block}
+@media(max-width:460px){.footer{flex-direction:column;align-items:flex-start}button[type=submit]{width:100%}.form-wrap{padding:1.75rem}}
+</style>
+</head>
+<body>
+<a href="index.html?skip=true" class="back-home">Back to Home</a>
+
+<div class="page">
+  <div class="header">
+    <div class="tag"><span class="tag-dot"></span>Get in touch</div>
+    <h1>Let's<br/>work<br/><span>together.</span></h1>
+    <p class="sub">Drop us a message. We respond to every inquiry within 24 hours.</p>
+  </div>
+  <div class="form-wrap">
+    <form id="cf" novalidate>
+      <div class="field" id="f-name">
+        <div class="field-inner">
+          <div class="field-top"><label for="name">Your name</label><span class="field-idx">01 / 03</span></div>
+          <input type="text" id="name" name="name" placeholder="Jane Doe" autocomplete="name"/>
+          <div class="focus-bar"></div>
+          <p class="err-msg">Name is required.</p>
+        </div>
+      </div>
+      <div class="field" id="f-email">
+        <div class="field-inner">
+          <div class="field-top"><label for="email">Email address</label><span class="field-idx">02 / 03</span></div>
+          <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email"/>
+          <div class="focus-bar"></div>
+          <p class="err-msg">Enter a valid email address.</p>
+        </div>
+      </div>
+      <div class="field" id="f-message">
+        <div class="field-inner">
+          <div class="field-top"><label for="message">Message</label><span class="field-idx">03 / 03</span></div>
+          <textarea id="message" name="message" placeholder="Tell us about your project…"></textarea>
+          <div class="focus-bar"></div>
+          <p class="err-msg">Please include a message.</p>
+        </div>
+      </div>
+      <div class="footer">
+        <p class="privacy">Your info is kept private<br/>and never shared.</p>
+        <button type="submit" id="sbtn">
+          <span class="btn-text">Send message</span>
+          <span class="btn-loading">Sending…</span>
+        </button>
+      </div>
+      <div class="notice" id="notice"></div>
+    </form>
+  </div>
+</div>
+<script>
+emailjs.init({ publicKey: '0arhdUS9XEPnGC6Tk' });
+
+const form   = document.getElementById('cf');
+const btn    = document.getElementById('sbtn');
+const notice = document.getElementById('notice');
+
+function showNotice(type, msg) {
+  notice.className = 'notice show ' + type;
+  notice.textContent = msg;
+}
+
+function setErr(id, on) {
+  document.getElementById('f-' + id).classList.toggle('has-err', on);
+  document.getElementById(id).classList.toggle('err', on);
+}
+
+function validate() {
+  const n = form.name.value.trim();
+  const e = form.email.value.trim();
+  const m = form.message.value.trim();
+  const eRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  let ok = true;
+  if (!n) { setErr('name', true); ok = false; }
+  if (!eRx.test(e)) { setErr('email', true); ok = false; }
+  if (!m) { setErr('message', true); ok = false; }
+  return ok;
+}
+
+['name', 'email', 'message'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => setErr(id, false));
+});
+
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  notice.className = 'notice';
+  if (!validate()) return;
+
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  const name    = form.name.value.trim();
+  const email   = form.email.value.trim();
+  const message = form.message.value.trim();
+
+  const params = {
+    from_name:  name,
+    from_email: email,
+    to_email:   'koredebamidele149@gmail.com',
+    reply_to:   email,
+    subject:    'New message from ' + name,
+    message:    message,
+  };
+
+  try {
+    await emailjs.send('service_1mmpe9i', 'template_y6bzuxr', params);
+    await emailjs.send('service_1mmpe9i', 'template_3rll1hs', params);
+    showNotice('ok', "Message sent — we'll be in touch shortly.");
+    form.reset();
+    ['name', 'email', 'message'].forEach(id => setErr(id, false));
+  } catch (err) {
+    console.error('EmailJS error:', err);
+    showNotice('fail', 'Error ' + (err.status || '') + ': ' + (err.text || 'Something went wrong. Please try again.'));
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+  }
+});
+</script>
+</body>
+</html>
